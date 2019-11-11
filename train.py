@@ -189,8 +189,9 @@ def diarization_experiment(
             exp_name=exp_name
         )
         print('\n------------------------------------')
-        print('[{}] - {:,.2f} Accuracy for {}'.format(
-            datetime.now() - start, exp_accuracy, exp_name
+        print('[{}] - COMPLETED {}: {:,.2f}% Acc ({:,.2f}% DER)'.format(
+            datetime.now() - start, exp_name, exp_accuracy * 100,
+            (1 - exp_accuracy) * 100
         ))
     # k-fold cross validation
     else:
@@ -254,20 +255,24 @@ def diarization_experiment(
                 inference_args=inference_args,
                 exp_name=fold_exp
             )
-            fold_accuracies[exp_name] = exp_accuracy
+            fold_accuracies[fold_exp] = exp_accuracy
             print('\n------------------------------------')
-            print('[{}] - {:,.2f} Accuracy for {}'.format(
-                datetime.now() - start, exp_accuracy, exp_name
+            print('[{}] - COMPLETE_FOLD {}: {:,.2f}% Acc ({:,.2f}% DER)'.format(
+                datetime.now() - start, fold_exp, exp_accuracy * 100,
+                (1 - exp_accuracy) * 100
             ))
 
         # Overall
         print('\n================ OVERALL =================')
         for fold_exp, acc in fold_accuracies.items():
-            print('{}:\t{}%'.format(fold_exp, acc))
+            print('{}:\t{:,.2f}% ACC\t{:,.2f}% DER'.format(
+                fold_exp, 100 * acc, 100 * (1.0 - acc)
+            ))
 
         # Total accuracy
         total_acc = np.mean(list(fold_accuracies.values()))
-        print('{:.3f}% Total accuracy'.format(total_acc))
+        print('{:.3f}% Total accuracy'.format(total_acc * 100))
+        print('{:.3f}% Total DER'.format((1.0 - total_acc) * 100))
 
 def main():
     """The main function."""
@@ -285,13 +290,14 @@ def main():
 
 """
 ==== TIMIT ====
-python3 -u train.py --enable-cuda --batch_size 50 \
+nophup python3 -u train.py --enable-cuda --batch_size 50 \
 --out-dir /data4/shuyang/TIMIT_spk \
 --train-seq /data4/shuyang/TIMIT_spk/TRAIN_sequence.npy \
 --train-clusters /data4/shuyang/TIMIT_spk/TRAIN_cluster_id.npy \
 --test-seq /data4/shuyang/TIMIT_spk/TEST_sequence.npy \
 --test-clusters /data4/shuyang/TIMIT_spk/TEST_cluster_id.npy \
--x 7 --debug --quick-test --exp-name timit-cv
+-x 5 --exp-name timit-cv > /data4/shuyang/timit-csv.log &
+tail -f /data4/shuyang/timit-csv.log
 
 """
 if __name__ == '__main__':

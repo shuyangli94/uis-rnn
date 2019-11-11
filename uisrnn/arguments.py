@@ -106,6 +106,12 @@ def parse_arguments():
         description='Training configurations.', add_help=False)
 
     training_parser.add_argument(
+        '--log-iter',
+        type=int,
+        default=200,
+        help='Log status every K iterations',
+    )
+    training_parser.add_argument(
         '--quick-test',
         action='store_true',
         default=False,
