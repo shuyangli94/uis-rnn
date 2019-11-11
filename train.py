@@ -100,7 +100,7 @@ def diarization_experiment(
     # Testing
     with torch.no_grad():
         for test_seq, test_cluster in zip(
-            test_sequence.tolist(), test_cluster_id.tolist()
+            test_sequence, test_cluster_id
         ):
             predicted_cluster_id = model.predict(test_seq, inference_args)
             predicted_cluster_ids.append(predicted_cluster_id)
@@ -138,12 +138,12 @@ def main():
 
 """
 ==== TIMIT ====
-python3 -u train.py --enable-cuda --out-dir /data4/shuyang/TIMIT_spk \
+python3 -u train.py --enable-cuda --batch_size 50 \
+--out-dir /data4/shuyang/TIMIT_spk \
 --train-seq /data4/shuyang/TIMIT_spk/TRAIN_sequence.npy \
 --train-clusters /data4/shuyang/TIMIT_spk/TRAIN_cluster_id.npy \
 --test-seq /data4/shuyang/TIMIT_spk/TEST_sequence.npy \
 --test-clusters /data4/shuyang/TIMIT_spk/TEST_cluster_id.npy
-
 
 """
 if __name__ == '__main__':
