@@ -245,6 +245,8 @@ class UISRNN:
           self.observation_dim,
           self.device)
     train_loss = []
+
+    n_train_iter = 5 if args.quick_test else args.train_iteration
     for num_iter in range(args.train_iteration):
       optimizer.zero_grad()
       # For online learning, pack a subset in each iteration.
