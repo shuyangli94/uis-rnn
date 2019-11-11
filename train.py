@@ -54,6 +54,9 @@ def diarization_experiment(
     """
     start = datetime.now()
 
+    if training_args.debug:
+        print('\n\n===== DEBUG MODE =====\n\n')
+
     def debug(m):
         if training_args.debug:
             print(m)
@@ -109,6 +112,10 @@ def diarization_experiment(
             debug('Test seq shape: {}'.format(test_seq.shape))
             debug('Test cluster: {}'.format(test_cluster))
             predicted_cluster_id = model.predict(test_seq, inference_args)
+            debug('Predicted cluster ID: {}, class {}'.format(
+                predicted_cluster_id,
+                predicted_cluster_id.__class__.__name__
+            ))
             predicted_cluster_ids.append(predicted_cluster_id)
             accuracy = uisrnn.compute_sequence_match_accuracy(
                 test_cluster, predicted_cluster_id)
