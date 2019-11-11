@@ -153,13 +153,22 @@ def diarization_experiment(
         exp_name = data_args.exp_name
 
         # Load data
-        train_sequence = np.load(data_args.train_seq, allow_pickle=True)
-        train_cluster_id = np.load(data_args.train_clusters, allow_pickle=True)
-        test_sequence = np.load(data_args.test_seq, allow_pickle=True)
-        test_cluster_id = np.load(data_args.test_clusters, allow_pickle=True)
+        train_sequence = list(np.load(
+            data_args.train_seq, allow_pickle=True
+        ))
+        train_cluster_id = list(np.load(
+            data_args.train_clusters, allow_pickle=True
+        ))
+        test_sequence = list(np.load(
+            data_args.test_seq, allow_pickle=True
+        ))
+        test_cluster_id = list(np.load(
+            data_args.test_clusters, allow_pickle=True
+        ))
 
         # Quick-test with 10 values
         if training_args.quick_test:
+            print('===== QUICK TEST MODE =====')
             train_sequence = train_sequence[:10]
             train_cluster_id = train_cluster_id[:10]
             test_sequence = test_sequence[:10]
@@ -189,13 +198,18 @@ def diarization_experiment(
         exp_name = data_args.exp_name
 
         # Load data - we pass the ALL dvectors into train-X args
-        all_sequence = np.load(data_args.train_seq, allow_pickle=True)
-        all_cluster_id = np.load(data_args.train_clusters, allow_pickle=True)
+        all_sequence = list(np.load(
+            data_args.train_seq, allow_pickle=True
+        ))
+        all_cluster_id = list(np.load(
+            data_args.train_clusters, allow_pickle=True
+        ))
 
-        # Quick-test with 10 values
+        # Quick-test with 20 values
         if training_args.quick_test:
-            all_sequence = all_sequence[:10]
-            all_cluster_id = all_cluster_id[:10]
+            print('===== QUICK TEST MODE =====')
+            all_sequence = all_sequence[:20]
+            all_cluster_id = all_cluster_id[:20]
             exp_name += '-QT'
 
         print('{} - Loaded data'.format(datetime.now() - start))
