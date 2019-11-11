@@ -20,6 +20,7 @@ from torch import nn
 from torch import optim
 import torch.nn.functional as F
 
+from tqdm import tqdm
 from uisrnn import loss_func
 from uisrnn import utils
 
@@ -247,7 +248,7 @@ class UISRNN:
     train_loss = []
 
     n_train_iter = 5 if args.quick_test else args.train_iteration
-    for num_iter in range(n_train_iter):
+    for num_iter in tqdm(range(n_train_iter)):
       optimizer.zero_grad()
       # For online learning, pack a subset in each iteration.
       if args.batch_size is not None:
