@@ -106,6 +106,18 @@ def parse_arguments():
         description='Training configurations.', add_help=False)
 
     training_parser.add_argument(
+        '--quick-test',
+        action='store_true',
+        default=False,
+        help='Quick test mode',
+    )
+    training_parser.add_argument(
+        '--cross-validation', '-x',
+        type=int,
+        default=None,
+        help='Cross-validate over this many folds',
+    )
+    training_parser.add_argument(
         '--debug',
         action='store_true',
         default=False,
@@ -219,6 +231,12 @@ def parse_arguments():
         description='Data arguments.', add_help=False
     )
 
+    data_parser.add_argument(
+        '--exp-name', '-E',
+        type=str,
+        default='uis-rnn',
+        help='Experiment base name'
+    )
     data_parser.add_argument(
         '--train-seq',
         type=str,
