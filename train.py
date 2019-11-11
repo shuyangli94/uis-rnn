@@ -54,6 +54,10 @@ def diarization_experiment(
     """
     start = datetime.now()
 
+    def debug(m):
+        if training_args.debug:
+            print(m)
+
     predicted_cluster_ids = []
     test_record = []
 
@@ -72,7 +76,7 @@ def diarization_experiment(
         datetime.now() - start, model.__class__.__name__,
         count_parameters(model.rnn_model)
     ))
-    print(model)
+    print(model.rnn_model)
 
     # Training
     model_loc = os.path.join(training_args.out_dir, MODEL_NAME_STUB)
@@ -102,6 +106,8 @@ def diarization_experiment(
         for test_seq, test_cluster in zip(
             test_sequence, test_cluster_id
         ):
+            debug('Test seq shape: {}'.format(test_seq.shape))
+            debug('Test cluster: {}'.format(test_cluster))
             predicted_cluster_id = model.predict(test_seq, inference_args)
             predicted_cluster_ids.append(predicted_cluster_id)
             accuracy = uisrnn.compute_sequence_match_accuracy(

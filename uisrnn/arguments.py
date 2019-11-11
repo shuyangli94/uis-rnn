@@ -106,6 +106,12 @@ def parse_arguments():
         description='Training configurations.', add_help=False)
 
     training_parser.add_argument(
+        '--debug',
+        action='store_true',
+        default=False,
+        help='Debug mode',
+    )
+    training_parser.add_argument(
         '--seed',
         type=int,
         default=2019,
