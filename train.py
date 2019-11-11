@@ -231,11 +231,8 @@ def diarization_experiment(
                 fillvalue=None
             )
         ]
-        print(fold_ix)
         fold_accuracies = dict()
         for fold_n in range(n_folds):
-            print(fold_n)
-            print([x for x in range(n_folds) if x != fold_n])
             # Get training/testing data
             fold_exp = '{}-{}'.format(exp_name, fold_n)
             train_ix = list(chain.from_iterable(
