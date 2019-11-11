@@ -228,8 +228,11 @@ def diarization_experiment(
             list(filter(None.__ne__, f_ix)) for f_ix in
             zip_longest(*[iter(indices)]*n_folds, fillvalue=None)
         ]
+        print(fold_ix)
         fold_accuracies = dict()
         for fold_n in range(n_folds):
+            print(fold_n)
+            print([x for x in range(n_folds) if x != fold_n])
             # Get training/testing data
             fold_exp = '{}-{}'.format(exp_name, fold_n)
             train_ix = list(chain.from_iterable(
@@ -288,8 +291,7 @@ python3 -u train.py --enable-cuda --batch_size 50 \
 --train-clusters /data4/shuyang/TIMIT_spk/TRAIN_cluster_id.npy \
 --test-seq /data4/shuyang/TIMIT_spk/TEST_sequence.npy \
 --test-clusters /data4/shuyang/TIMIT_spk/TEST_cluster_id.npy \
---exp-name timit \
---debug --quick-test
+-x 5 --debug --quick-test --exp-name timit-cv
 
 """
 if __name__ == '__main__':
