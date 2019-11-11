@@ -247,7 +247,7 @@ class UISRNN:
     train_loss = []
 
     n_train_iter = 5 if args.quick_test else args.train_iteration
-    for num_iter in range(args.train_iteration):
+    for num_iter in range(n_train_iter):
       optimizer.zero_grad()
       # For online learning, pack a subset in each iteration.
       if args.batch_size is not None:
@@ -293,7 +293,7 @@ class UISRNN:
       self.sigma2.data.clamp_(min=1e-6)
 
       if (np.remainder(num_iter, 10) == 0 or
-          num_iter == args.train_iteration - 1):
+          num_iter == n_train_iter - 1):
         self.logger.print(
             2,
             'Iter: {:d}  \t'
@@ -308,7 +308,7 @@ class UISRNN:
                 float(loss3.data)))
       train_loss.append(float(loss1.data))  # only save the likelihood part
     self.logger.print(
-        1, 'Done training with {} iterations'.format(args.train_iteration))
+        1, 'Done training with {} iterations'.format(n_train_iter))
 
   def fit(self, train_sequences, train_cluster_ids, args):
     """Fit UISRNN model.
