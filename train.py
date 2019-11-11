@@ -122,7 +122,7 @@ def diarization_experiment(
             ))
             predicted_cluster_ids.append(predicted_cluster_id)
             accuracy = uisrnn.compute_sequence_match_accuracy(
-                test_cluster, predicted_cluster_id)
+                test_cluster.tolist(), predicted_cluster_id)
             test_record.append((accuracy, len(test_cluster)))
             print('Ground truth labels:')
             print(test_cluster)
