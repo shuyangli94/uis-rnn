@@ -226,7 +226,10 @@ def diarization_experiment(
         # Indices for each fold
         fold_ix = [
             list(filter(None.__ne__, f_ix)) for f_ix in
-            zip_longest(*[iter(indices)]*n_folds, fillvalue=None)
+            zip_longest(
+                *[iter(indices)] * int(np.ceil(len(all_sequence) / n_folds)),
+                fillvalue=None
+            )
         ]
         print(fold_ix)
         fold_accuracies = dict()
@@ -291,7 +294,7 @@ python3 -u train.py --enable-cuda --batch_size 50 \
 --train-clusters /data4/shuyang/TIMIT_spk/TRAIN_cluster_id.npy \
 --test-seq /data4/shuyang/TIMIT_spk/TEST_sequence.npy \
 --test-clusters /data4/shuyang/TIMIT_spk/TEST_cluster_id.npy \
--x 5 --debug --quick-test --exp-name timit-cv
+-x 7 --debug --quick-test --exp-name timit-cv
 
 """
 if __name__ == '__main__':
