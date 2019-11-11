@@ -292,8 +292,7 @@ class UISRNN:
       # avoid numerical issues
       self.sigma2.data.clamp_(min=1e-6)
 
-      if (np.remainder(num_iter, 10) == 0 or
-          num_iter == n_train_iter - 1):
+      if (num_iter % args.log_iter == 0) or (num_iter == n_train_iter - 1):
         self.logger.print(
             2,
             'Iter: {:d}\t'

@@ -290,14 +290,16 @@ def main():
 
 """
 ==== TIMIT ====
-nophup python3 -u train.py --enable-cuda --batch_size 50 \
+rm -rf /data4/shuyang/TIMIT_spk/timit*QT*
+nohup python3 -u train.py --enable-cuda --batch_size 50 \
 --out-dir /data4/shuyang/TIMIT_spk \
 --train-seq /data4/shuyang/TIMIT_spk/TRAIN_sequence.npy \
 --train-clusters /data4/shuyang/TIMIT_spk/TRAIN_cluster_id.npy \
 --test-seq /data4/shuyang/TIMIT_spk/TEST_sequence.npy \
 --test-clusters /data4/shuyang/TIMIT_spk/TEST_cluster_id.npy \
--x 5 --exp-name timit-cv > /data4/shuyang/timit-csv.log &
-tail -f /data4/shuyang/timit-csv.log
+-x 5 --exp-name timit-cv > /data4/shuyang/timit-cv.log &
+
+tail -f /data4/shuyang/timit-cv.log
 
 """
 if __name__ == '__main__':
