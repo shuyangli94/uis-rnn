@@ -70,7 +70,7 @@ def diarization_experiment(
     model = uisrnn.UISRNN(model_args)
     print('{} - Created {} model with {:,} params:'.format(
         datetime.now() - start, model.__class__.__name__,
-        count_parameters(model)
+        count_parameters(model.rnn_model)
     ))
     print(model)
 
@@ -97,20 +97,21 @@ def diarization_experiment(
             datetime.now() - start, model_loc
         ))
 
-    # testing
-    for test_seq, test_cluster in zip(
-        test_sequence.tolist(), test_cluster_id.tolist()
-    ):
-        predicted_cluster_id = model.predict(test_seq, inference_args)
-        predicted_cluster_ids.append(predicted_cluster_id)
-        accuracy = uisrnn.compute_sequence_match_accuracy(
-            test_cluster, predicted_cluster_id)
-        test_record.append((accuracy, len(test_cluster)))
-        print('Ground truth labels:')
-        print(test_cluster)
-        print('Predicted labels:')
-        print(predicted_cluster_id)
-        print('-' * 80)
+    # Testing
+    with torch.no_grad():
+        for test_seq, test_cluster in zip(
+            test_sequence.tolist(), test_cluster_id.tolist()
+        ):
+            predicted_cluster_id = model.predict(test_seq, inference_args)
+            predicted_cluster_ids.append(predicted_cluster_id)
+            accuracy = uisrnn.compute_sequence_match_accuracy(
+                test_cluster, predicted_cluster_id)
+            test_record.append((accuracy, len(test_cluster)))
+            print('Ground truth labels:')
+            print(test_cluster)
+            print('Predicted labels:')
+            print(predicted_cluster_id)
+            print('-' * 80)
 
     output_string = uisrnn.output_result(
         model_args,
