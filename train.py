@@ -109,8 +109,12 @@ def diarization_experiment(
         for test_seq, test_cluster in zip(
             test_sequence, test_cluster_id
         ):
-            debug('Test seq shape: {}'.format(test_seq.shape))
-            debug('Test cluster: {}'.format(test_cluster))
+            debug('Test seq ({}) shape: {}'.format(
+                test_seq.__class__.__name__, test_seq.shape
+            ))
+            debug('Test cluster ({}): {}'.format(
+                test_cluster.__class__.__name__, test_cluster
+            ))
             predicted_cluster_id = model.predict(test_seq, inference_args)
             debug('Predicted cluster ID: {}, class {}'.format(
                 predicted_cluster_id,
